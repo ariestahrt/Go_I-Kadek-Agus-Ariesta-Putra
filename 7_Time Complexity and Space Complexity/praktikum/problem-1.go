@@ -7,8 +7,9 @@ import (
 
 func primeNumber(number int) bool {
 	if number < 2 { return false }
+	if number > 2 && number % 2 == 0 { return false }
 
-	for i := 2; i<= int(math.Sqrt(float64(number))); i++ {
+	for i := 3; i<= int(math.Sqrt(float64(number))); i+=2 {
 		if number % i == 0 {
 			return false
 		} 
