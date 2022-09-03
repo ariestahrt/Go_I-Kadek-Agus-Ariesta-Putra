@@ -40,23 +40,26 @@ func MergeSort(slice []pair) []pair {
 }
 
 func MostAppearItem(items []string) []pair {
-	res := []pair{}
-	count := map[string]int{}
+	result := []pair{}
 
 	for _, item := range items {
-		if _, exist := count[item]; exist {
-			count[item]++
-		}else{
-			count[item] = 1
+		// check exist in array
+		found := false
+		for i, res := range result {
+			if res.name == item {
+				// (&res).count++
+				result[i].count++
+				found = true
+				break
+			}
+		}
+		if !found {
+			result = append(result, pair{name: item, count: 1})
 		}
 	}
 
-	for key, val := range count {
-		res = append(res, pair{name: key, count: val})
-	}
-
-	res_sorted := MergeSort(res)
-	return res_sorted
+	result_sorted := MergeSort(result)
+	return result_sorted
 }
 
 func main() {
