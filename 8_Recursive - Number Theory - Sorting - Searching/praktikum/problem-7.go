@@ -21,7 +21,7 @@ func playingDomino(cards [][]int, deck []int) interface{} {
 	if max >= 0 {
 		return fmt.Sprintf("[%d %d]", res[0], res[1])
 	}else{
-		return "tutup kartu"
+		return 1
 	}
 }
 
