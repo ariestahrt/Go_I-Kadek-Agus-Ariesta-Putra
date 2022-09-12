@@ -37,6 +37,8 @@ Silakan mempelajari terlebih dahulu lebih lanjut mengenai SQL dan MySQL. Sekaran
 
 ### Releases dan Jawaban
 
+Full query ada pada [release-1.sql](release-1.sql)
+
 1. Create database alta_online_shop.
 ```sql
 CREATE DATABASE alta_online_shop;
@@ -170,16 +172,11 @@ DROP TABLE SHIPPING;
 # BUAT DEKSRIPSI METODE BAYAR
 CREATE TABLE DESKRIPSI_METODE_BAYAR ( 
 	ID INT PRIMARY KEY,
+	ID_MB INT NOT NULL UNIQUE,
 	DEKSRIPSI LONGTEXT NOT NULL,
 	CREATED_AT TIMESTAMP,
-	UPDATED_AT TIMESTAMP
-);
-
-# SAMBUNGIN KE METODE_BAYAR
-ALTER TABLE METODE_BAYAR 
-ADD ( 
-	ID_DESKRIPSI_MB INT,
-	CONSTRAINT FK_DESKRIPSIMB_MB FOREIGN KEY (ID_DESKRIPSI_MB) REFERENCES DESKRIPSI_METODE_BAYAR(ID)
+	UPDATED_AT TIMESTAMP,
+	CONSTRAINT FK_METODEBAYAR_DMB FOREIGN KEY (ID_MB) REFERENCES METODE_BAYAR(ID) 
 );
 ```
 - b. 1-to-many: user dengan alamat, misalnya user punya banyak alamat
@@ -219,3 +216,6 @@ CREATE TABLE DETAIL_PELANGGAN_METODE_BAYAR (
 	CONSTRAINT FK_METODEBAYAR_DPMT FOREIGN KEY (ID_METODE_BAYAR) REFERENCES METODE_BAYAR(ID)
 );
 ```
+
+Sehingga diagramnya menjadi sebagai berikut:
+![Diagram setelah jadi](../screenshots/diagram.png)
