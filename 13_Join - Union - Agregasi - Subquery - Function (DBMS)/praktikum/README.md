@@ -5,6 +5,9 @@ Diberikan soal praktikum sebagai berikut: https://docs.google.com/document/d/1xC
 ## Jawaban
 
 ### Data Definition Language
+![Gambar Skema](../screenshots/SkemaSoal.png)
+Pada skema di soal, terdapat beberapa tabel yang aneh seperti tabel `users` tidak memiliki nama namun pada soal tiba-tiba diminta untuk menginsert nama, kemudian tabel `products` tidak memiliki harga sehingga kurang jelas referensi harga yang digunakan pada tabel `transaction_details`. Sehingga skema yang saya gunakan adalah sebagai berikut: 
+
 ![Gambar Skema](../screenshots/DatabaseSchema.png)
 
 Berikut merupakan SQL Query yang digunakan untuk membangun DB di atas, terdapat juga trigger untuk membuat auto-fill field UPDATED_AT setiap update dilakukan, serta terdapat trigger untuk otomatis pengisian `TOTAL_QTY` dan `TOTAL_PRICE` pada tabel `transactions` setiap kali melakukan insert/update pada tabel `transaction_details`. 
