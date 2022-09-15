@@ -1,0 +1,63 @@
+-- 1. Gabungkan data transaksi dari user id 1 dan user id 2.
+SELECT * FROM TRANSACTIONS WHERE USER_ID=1
+UNION
+SELECT * FROM TRANSACTIONS WHERE USER_ID=2;
+
+-- 2. Tampilkan jumlah harga transaksi user id 1.
+SELECT SUM(TOTAL_PRICE) FROM TRANSACTIONS WHERE USER_ID=1;
+
+-- 3. Tampilkan total transaksi dengan product type 2.
+SELECT COUNT(*) FROM (SELECT PRODUCT_ID FROM TRANSACTIONS T
+INNER JOIN TRANSACTION_DETAILS TD
+ON T.ID = TD.TRANSACTION_ID) TTD
+INNER JOIN PRODUCTS P
+ON TTD.PRODUCT_ID = P.ID
+WHERE P.PRODUCT_TYPE_ID = 2;
+
+-- 4. Tampilkan semua field table product dan field name table product type yang saling berhubungan.
+SELECT * FROM PRODUCTS P
+INNER JOIN PRODUCT_TYPES PT
+ON P.PRODUCT_TYPE_ID = PT.ID;
+
+-- 5. Tampilkan semua field table transaction, field name table product dan field name table user.
+SELECT * FROM TRANSACTIONS T
+INNER JOIN USERS U ON T.USER_ID = U.ID
+INNER JOIN (SELECT PRODUCT_ID FROM TRANSACTION_DETAILS) TD ON T.ID = TD.PRODUCT_ID
+INNER JOIN PRODUCTS P ON PRODUCT_ID = P.ID;
+
+-- 6. Buat function setelah data transaksi dihapus maka transaction detail terhapus juga dengan transaction id yang dimaksud.
+
+-- TRIGGER FOR REMOVE TRANSACTION_DETAILS BEFORE DELETE TRANSACTIONS
+DELIMITER $$
+
+CREATE TRIGGER TRANSACTION_DELETED
+BEFORE DELETE
+ON TRANSACTIONS FOR EACH ROW
+BEGIN
+    DELETE FROM TRANSACTIONS_DETAILS WHERE TRANSACTION_ID = OLD.ID;
+END$$
+
+DELIMITER ;
+
+-- 7. Buat function setelah data transaksi detail dihapus maka data total_qty terupdate berdasarkan qty data transaction id yang dihapus.
+-- TRIGGER FOR AUTO UPDATE TRANSACTIONS TOTAL_PRICE AND TOTAL_QTY
+DELIMITER $$
+
+CREATE TRIGGER TRANSACTION_DETAIL_DELETED
+AFTER DELETE
+ON TRANSACTION_DETAILS FOR EACH ROW
+BEGIN
+    UPDATE TRANSACTIONS T
+    SET
+        TOTAL_PRICE = T.TOTAL_PRICE - OLD.PRICE,
+        TOTAL_QTY = T.TOTAL_QTY - OLD.QTY
+    WHERE T.ID = OLD.TRANSACTION_ID;
+END$$
+
+DELIMITER ;
+
+-- TESTING
+DELETE FROM transaction_details WHERE PRODUCT_ID=1 AND TRANSACTION_ID=1;
+
+-- 8. Tampilkan data products yang tidak pernah ada di tabel transaction_details dengan sub-query.
+SELECT * FROM PRODUCTS P WHERE P.ID NOT IN (SELECT PRODUCT_ID FROM TRANSACTION_DETAILS);
