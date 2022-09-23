@@ -1,0 +1,408 @@
+{
+	"info": {
+		"_postman_id": "62226f7b-9e5c-485e-82f3-c00103c1dc47",
+		"name": "ALTA-SEC-16-COLLECTIONS-IKADEKAGUSARIESTAPUTRA@GMAIL.COM",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "22945941"
+	},
+	"item": [
+		{
+			"name": "API 1 - https://newsapi.org/",
+			"item": [
+				{
+					"name": "Semua artikel tentang valorant",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE}}/everything?q=valorant&apiKey={{API_KEY}}",
+							"host": [
+								"{{BASE}}"
+							],
+							"path": [
+								"everything"
+							],
+							"query": [
+								{
+									"key": "q",
+									"value": "valorant"
+								},
+								{
+									"key": "apiKey",
+									"value": "{{API_KEY}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Semua artikel mengandung iphone pada bulan september diurutkan berdasarkan polularitas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE}}/everything?q=apple&from=2022-09-01&to=2022-10-01&sortBy=popularity&apiKey={{API_KEY}}",
+							"host": [
+								"{{BASE}}"
+							],
+							"path": [
+								"everything"
+							],
+							"query": [
+								{
+									"key": "q",
+									"value": "apple"
+								},
+								{
+									"key": "from",
+									"value": "2022-09-01"
+								},
+								{
+									"key": "to",
+									"value": "2022-10-01"
+								},
+								{
+									"key": "sortBy",
+									"value": "popularity"
+								},
+								{
+									"key": "apiKey",
+									"value": "{{API_KEY}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Top headlines di negara Indonesia",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE}}/top-headlines?country=id&apiKey={{API_KEY}}",
+							"host": [
+								"{{BASE}}"
+							],
+							"path": [
+								"top-headlines"
+							],
+							"query": [
+								{
+									"key": "country",
+									"value": "id"
+								},
+								{
+									"key": "apiKey",
+									"value": "{{API_KEY}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Top headlines dari CNN",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE}}/top-headlines?sources=cnn&apiKey={{API_KEY}}",
+							"host": [
+								"{{BASE}}"
+							],
+							"path": [
+								"top-headlines"
+							],
+							"query": [
+								{
+									"key": "sources",
+									"value": "cnn"
+								},
+								{
+									"key": "apiKey",
+									"value": "{{API_KEY}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Top Headline dari semua media",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE}}/top-headlines/sources?apiKey={{API_KEY}}",
+							"host": [
+								"{{BASE}}"
+							],
+							"path": [
+								"top-headlines",
+								"sources"
+							],
+							"query": [
+								{
+									"key": "apiKey",
+									"value": "{{API_KEY}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "API 2 - https://swapi.dev/",
+			"item": [
+				{
+					"name": "Semua film",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE}}/films/",
+							"host": [
+								"{{BASE}}"
+							],
+							"path": [
+								"films",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Planet dengan id 1",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE}}/planets/1",
+							"host": [
+								"{{BASE}}"
+							],
+							"path": [
+								"planets",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Semua starships",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE}}/starships",
+							"host": [
+								"{{BASE}}"
+							],
+							"path": [
+								"starships"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Vehicle dengan id 4",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE}}/vehicles/4",
+							"host": [
+								"{{BASE}}"
+							],
+							"path": [
+								"vehicles",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Semua species",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE}}/species",
+							"host": [
+								"{{BASE}}"
+							],
+							"path": [
+								"species"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Target 3 - Rent a Book",
+			"item": [
+				{
+					"name": "GET Token",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "client_id",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "client_secret",
+									"value": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{BASE}}/token",
+							"host": [
+								"{{BASE}}"
+							],
+							"path": [
+								"token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get user dengan id 1",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{BASE}}/user/1",
+							"host": [
+								"{{BASE}}"
+							],
+							"path": [
+								"user",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Put user dengan id 1",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "Bearer {{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Sarwo\",\r\n    \"age\": 56,\r\n    \"sex\": \"female\"\r\n}"
+						},
+						"url": {
+							"raw": "{{BASE}}/user/1",
+							"host": [
+								"{{BASE}}"
+							],
+							"path": [
+								"user",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post user baru",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "Bearer {{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 99911,\r\n  \"name\": \"Jhonny Jhonny Yes Papa\",\r\n  \"age\": 56,\r\n  \"sex\": \"male\",\r\n  \"client_id\": 1\r\n}"
+						},
+						"url": {
+							"raw": "{{BASE}}/user",
+							"host": [
+								"{{BASE}}"
+							],
+							"path": [
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete user dengan id 1",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "Bearer {{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{BASE}}/user/1",
+							"host": [
+								"{{BASE}}"
+							],
+							"path": [
+								"user",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
