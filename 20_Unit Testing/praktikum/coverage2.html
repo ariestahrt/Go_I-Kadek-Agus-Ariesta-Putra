@@ -1,0 +1,435 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>controllers: Go Coverage Report</title>
+		<style>
+			body {
+				background: black;
+				color: rgb(80, 80, 80);
+			}
+			body, pre, #legend span {
+				font-family: Menlo, monospace;
+				font-weight: bold;
+			}
+			#topbar {
+				background: black;
+				position: fixed;
+				top: 0; left: 0; right: 0;
+				height: 42px;
+				border-bottom: 1px solid rgb(80, 80, 80);
+			}
+			#content {
+				margin-top: 50px;
+			}
+			#nav, #legend {
+				float: left;
+				margin-left: 10px;
+			}
+			#legend {
+				margin-top: 12px;
+			}
+			#nav {
+				margin-top: 10px;
+			}
+			#legend span {
+				margin: 0 5px;
+			}
+			.cov0 { color: rgb(192, 0, 0) }
+.cov1 { color: rgb(128, 128, 128) }
+.cov2 { color: rgb(116, 140, 131) }
+.cov3 { color: rgb(104, 152, 134) }
+.cov4 { color: rgb(92, 164, 137) }
+.cov5 { color: rgb(80, 176, 140) }
+.cov6 { color: rgb(68, 188, 143) }
+.cov7 { color: rgb(56, 200, 146) }
+.cov8 { color: rgb(44, 212, 149) }
+.cov9 { color: rgb(32, 224, 152) }
+.cov10 { color: rgb(20, 236, 155) }
+
+		</style>
+	</head>
+	<body>
+		<div id="topbar">
+			<div id="nav">
+				<select id="files">
+				
+				<option value="file0">praktikum19/controllers/auth.go (81.8%)</option>
+				
+				<option value="file1">praktikum19/controllers/book_controller.go (87.5%)</option>
+				
+				<option value="file2">praktikum19/controllers/user_controller.go (87.5%)</option>
+				
+				</select>
+			</div>
+			<div id="legend">
+				<span>not tracked</span>
+			
+				<span class="cov0">not covered</span>
+				<span class="cov8">covered</span>
+			
+			</div>
+		</div>
+		<div id="content">
+		
+		<pre class="file" id="file0" style="display: none">package controllers
+
+import (
+        "net/http"
+        "praktikum19/auth"
+        "praktikum19/database"
+        "praktikum19/models"
+        "reflect"
+
+        "github.com/labstack/echo/v4"
+)
+
+
+func Login(c echo.Context) error <span class="cov8" title="1">{
+        var user *models.User = new(models.User)
+
+        if err := c.Bind(user); err != nil </span><span class="cov0" title="0">{
+                return c.JSON(http.StatusBadRequest, map[string]string{
+                        "message": "invalid request",
+                })
+        }</span>
+        
+        <span class="cov8" title="1">if reflect.DeepEqual(user, new(models.User)) </span><span class="cov0" title="0">{
+                return c.JSON(http.StatusBadRequest, map[string]string{
+                        "message": "invalid request",
+                })
+        }</span>
+        
+        <span class="cov8" title="1">var userDB *models.User = new(models.User)
+        database.DB.First(&amp;userDB, "email = ?", user.Email)
+        
+        if userDB.Password != user.Password </span><span class="cov8" title="1">{
+                return c.JSON(http.StatusUnauthorized, map[string]string{
+                        "message": "invalid username or password",
+                })
+        }</span>
+
+        <span class="cov8" title="1">token := auth.CreateToken(user.ID)
+
+        return c.JSON(http.StatusOK, map[string]string{
+                "token": token,
+        })</span>
+}</pre>
+		
+		<pre class="file" id="file1" style="display: none">package controllers
+
+import (
+        "net/http"
+        "praktikum19/database"
+        "praktikum19/models"
+        "strconv"
+
+        "github.com/labstack/echo/v4"
+)
+
+// get all books
+func GetBooksController(c echo.Context) error <span class="cov8" title="1">{
+        var books []models.Book
+        
+        if err := database.DB.Find(&amp;books).Error; err != nil </span><span class="cov0" title="0">{
+                return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+        }</span>
+
+        <span class="cov8" title="1">return c.JSON(http.StatusOK, map[string]interface{}{
+                "status": "success",
+                "message": "success get all books",
+                "data":   books,
+        })</span>
+}
+
+// get book by id
+func GetBookController(c echo.Context) error <span class="cov8" title="1">{
+        book := models.Book{}
+        id, err := strconv.Atoi(c.Param("id"))
+        if err != nil </span><span class="cov8" title="1">{
+                return c.JSON(http.StatusInternalServerError, map[string]interface{}{
+                        "status": "error",
+                        "messages": "input missmatch",
+                })
+        }</span>
+
+        <span class="cov8" title="1">if err := database.DB.First(&amp;book, id).Error; err != nil </span><span class="cov0" title="0">{
+                return c.JSON(http.StatusInternalServerError, map[string]interface{}{
+                        "status": "error",
+                        "message": "failed get book",
+                })
+        }</span>
+
+        <span class="cov8" title="1">return c.JSON(http.StatusOK, map[string]interface{}{
+                "status": "success",
+                "message": "OK",
+                "data":   book,
+        })</span>
+}
+
+// create new book
+func CreateBookController(c echo.Context) error <span class="cov8" title="1">{
+        book := models.Book{}
+        err := c.Bind(&amp;book)
+
+        if err != nil </span><span class="cov8" title="1">{
+                return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+        }</span>
+
+        <span class="cov8" title="1">if err := database.DB.Save(&amp;book).Error; err != nil </span><span class="cov0" title="0">{
+                return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+        }</span>
+
+        <span class="cov8" title="1">return c.JSON(http.StatusOK, map[string]interface{}{
+                "status": "success",
+                "message": "success create new book",
+                "data":    book,
+        })</span>
+}
+
+// delete book by id
+func DeleteBookController(c echo.Context) error <span class="cov8" title="1">{
+        // your solution here
+        var book models.Book
+        id, err := strconv.Atoi(c.Param("id"))
+        if err != nil </span><span class="cov8" title="1">{
+                return c.JSON(http.StatusInternalServerError, map[string]interface{}{
+                        "status": "error",
+                        "messages": "input missmatch",
+                })
+        }</span>
+        
+        <span class="cov8" title="1">delete := database.DB.Delete(&amp;book, id)
+
+        if delete.Error != nil </span><span class="cov0" title="0">{
+                return c.JSON(http.StatusInternalServerError, map[string]interface{}{
+                        "status": "error",
+                        "message": "failed to delete book",
+                })
+        }</span>
+
+        <span class="cov8" title="1">if delete.RowsAffected == 0 </span><span class="cov8" title="1">{
+                return c.JSON(http.StatusBadRequest, map[string]interface{}{
+                        "status": "error",
+                        "message": "book not found",
+                })
+        }</span>
+
+        <span class="cov8" title="1">return c.JSON(http.StatusOK, map[string]interface{}{
+                "status": "success",
+                "message": "OK",
+        })</span>
+}
+
+// update book by id
+func UpdateBookController(c echo.Context) error <span class="cov8" title="1">{
+        // your solution here
+        var book models.Book
+        id, err := strconv.Atoi(c.Param("id"))
+        newBook := models.Book{}
+        c.Bind(&amp;newBook)
+
+        if err != nil </span><span class="cov8" title="1">{
+                return c.JSON(http.StatusInternalServerError, map[string]interface{}{
+                        "status":"error",
+                        "messages": "input missmatch",
+                })
+        }</span>
+
+        <span class="cov8" title="1">update := database.DB.Model(&amp;book).Where("id = ?", id).Update(newBook)
+
+        if update.Error != nil </span><span class="cov0" title="0">{
+                return c.JSON(http.StatusInternalServerError, map[string]interface{}{
+                        "status": "error",
+                        "message": "failed to update user",
+                })
+        }</span>
+
+        <span class="cov8" title="1">if update.RowsAffected == 0 </span><span class="cov8" title="1">{
+                return c.JSON(http.StatusBadRequest, map[string]interface{}{
+                        "status": "error",
+                        "message": "user not found",
+                })
+        }</span>
+
+        <span class="cov8" title="1">return c.JSON(http.StatusOK, map[string]interface{}{
+                "status": "success",
+                "message": "OK",
+                "data":   book,
+        })</span>
+}</pre>
+		
+		<pre class="file" id="file2" style="display: none">package controllers
+
+import (
+        "net/http"
+        "praktikum19/database"
+        "praktikum19/models"
+        "strconv"
+
+        "github.com/labstack/echo/v4"
+)
+
+// get all users
+func GetUsersController(c echo.Context) error <span class="cov8" title="1">{
+        var users []models.User
+        
+        if err := database.DB.Find(&amp;users).Error; err != nil </span><span class="cov0" title="0">{
+                return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+        }</span>
+
+        <span class="cov8" title="1">return c.JSON(http.StatusOK, map[string]interface{}{
+                "status": "success",
+                "message": "success get all users",
+                "data":   users,
+        })</span>
+}
+
+// get user by id
+func GetUserController(c echo.Context) error <span class="cov8" title="1">{
+        user := models.User{}
+        id, err := strconv.Atoi(c.Param("id"))
+        if err != nil </span><span class="cov8" title="1">{
+                return c.JSON(http.StatusInternalServerError, map[string]interface{}{
+                        "status": "error",
+                        "messages": "input missmatch",
+                })
+        }</span>
+
+        <span class="cov8" title="1">if err := database.DB.First(&amp;user, id).Error; err != nil </span><span class="cov0" title="0">{
+                return c.JSON(http.StatusInternalServerError, map[string]interface{}{
+                        "status": "error",
+                        "message": "failed get user",
+                })
+        }</span>
+
+        <span class="cov8" title="1">return c.JSON(http.StatusOK, map[string]interface{}{
+                "status": "success",
+                "message": "OK",
+                "data":   user,
+        })</span>
+}
+
+// create new user
+func CreateUserController(c echo.Context) error <span class="cov8" title="1">{
+        user := models.User{}
+        err := c.Bind(&amp;user)
+
+        if err != nil </span><span class="cov8" title="1">{
+                return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+        }</span>
+
+        <span class="cov8" title="1">if err := database.DB.Save(&amp;user).Error; err != nil </span><span class="cov0" title="0">{
+                return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+        }</span>
+
+        <span class="cov8" title="1">return c.JSON(http.StatusOK, map[string]interface{}{
+                "status": "success",
+                "message": "success create new user",
+                "data":    user,
+        })</span>
+}
+
+// delete user by id
+func DeleteUserController(c echo.Context) error <span class="cov8" title="1">{
+        // your solution here
+        var user models.User
+        id, err := strconv.Atoi(c.Param("id"))
+        if err != nil </span><span class="cov8" title="1">{
+                return c.JSON(http.StatusInternalServerError, map[string]interface{}{
+                        "status": "error",
+                        "messages": "input missmatch",
+                })
+        }</span>
+
+        <span class="cov8" title="1">delete := database.DB.Delete(&amp;user, id)
+
+        if delete.Error != nil </span><span class="cov0" title="0">{
+                return c.JSON(http.StatusInternalServerError, map[string]interface{}{
+                        "status": "error",
+                        "message": "failed to delete user",
+                })
+        }</span>
+
+        <span class="cov8" title="1">if delete.RowsAffected == 0 </span><span class="cov8" title="1">{
+                return c.JSON(http.StatusBadRequest, map[string]interface{}{
+                        "status": "error",
+                        "message": "user not found",
+                })
+        }</span>
+
+        <span class="cov8" title="1">return c.JSON(http.StatusOK, map[string]interface{}{
+                "status": "success",
+                "message": "OK",
+        })</span>
+}
+
+// update user by id
+func UpdateUserController(c echo.Context) error <span class="cov8" title="1">{
+        // your solution here
+        var user models.User
+        id, err := strconv.Atoi(c.Param("id"))
+        newUser := models.User{}
+        c.Bind(&amp;newUser)
+
+        if err != nil </span><span class="cov8" title="1">{
+                return c.JSON(http.StatusInternalServerError, map[string]interface{}{
+                        "status":"error",
+                        "messages": "input missmatch",
+                })
+        }</span>
+
+        <span class="cov8" title="1">update := database.DB.Model(&amp;user).Where("id = ?", id).Update(newUser)
+
+        if update.Error != nil </span><span class="cov0" title="0">{
+                return c.JSON(http.StatusInternalServerError, map[string]interface{}{
+                        "status": "error",
+                        "message": "failed to update user",
+                })
+        }</span>
+
+        <span class="cov8" title="1">if update.RowsAffected == 0 </span><span class="cov8" title="1">{
+                return c.JSON(http.StatusBadRequest, map[string]interface{}{
+                        "status": "error",
+                        "message": "user not found",
+                })
+        }</span>
+        
+        <span class="cov8" title="1">return c.JSON(http.StatusOK, map[string]interface{}{
+                "status": "success",
+                "message": "OK",
+                "data":   user,
+        })</span>
+}</pre>
+		
+		</div>
+	</body>
+	<script>
+	(function() {
+		var files = document.getElementById('files');
+		var visible;
+		files.addEventListener('change', onChange, false);
+		function select(part) {
+			if (visible)
+				visible.style.display = 'none';
+			visible = document.getElementById(part);
+			if (!visible)
+				return;
+			files.value = part;
+			visible.style.display = 'block';
+			location.hash = part;
+		}
+		function onChange() {
+			select(files.value);
+			window.scrollTo(0, 0);
+		}
+		if (location.hash != "") {
+			select(location.hash.substr(1));
+		}
+		if (!visible) {
+			select("file0");
+		}
+	})();
+	</script>
+</html>
