@@ -1,0 +1,24 @@
+version: '2.1'
+
+services:
+  db_mysql:
+    image: "mysql:latest"
+    environment:
+      MYSQL_ROOT_PASSWORD: "root"
+      MYSQL_DATABASE: "alta"
+      MYSQL_USER: "root"
+      MYSQL_PASSWORD: "root"
+    healthcheck:
+      test: ["CMD", "mysql", "-u", "root", "-proot", "-e", "show schemas"]
+      interval: 5s
+  
+  praktikum:
+    image: "ariestadocker/belajar-docker:1.0.0"
+    ports:
+      - "3000:3000"
+    environment:
+      DB_HOST: "db_mysql"
+      DB_USER: "alta"
+    depends_on:
+      db_mysql:
+        condition: service_healthy

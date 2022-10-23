@@ -1,0 +1,4 @@
+/app.db
+*cover.out
+*coverage.html
+.env
